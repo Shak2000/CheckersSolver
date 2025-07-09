@@ -1,0 +1,267 @@
+/* General Body and Font Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* Light gray background */
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+h1 {
+    color: #1f2937; /* Dark gray */
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Game Area Layout */
+.game-area {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    justify-content: center;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Checkers Board Styling */
+.board-container {
+    border: 5px solid #4b5563; /* Darker gray border for the board */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Prevent shrinking */
+    width: 400px; /* Fixed width for the board */
+    height: 400px; /* Fixed height for the board */
+}
+
+#checkers-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.square {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem; /* Size for pieces */
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.light-square {
+    background-color: #f0d9b5; /* Light wood color */
+}
+
+.dark-square {
+    background-color: #b58863; /* Dark wood color */
+}
+
+.dark-square.selected {
+    background-color: #a0c4ff; /* Lighter blue for selected */
+    box-shadow: inset 0 0 0 3px #3b82f6; /* Blue border on selection */
+}
+
+.dark-square.possible-move {
+    background-color: #c8e6c9; /* Light green for possible move */
+    box-shadow: inset 0 0 0 3px #4caf50; /* Green border for possible move */
+}
+
+.piece {
+    border-radius: 50%;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s ease-out;
+}
+
+.piece.white {
+    background-color: #e0e0e0; /* Light gray for white pieces */
+    color: #333;
+}
+
+.piece.black {
+    background-color: #333333; /* Dark gray for black pieces */
+    color: #eee;
+}
+
+.piece.king {
+    font-size: 2.5rem; /* Larger for kings */
+    text-shadow: 0 0 5px gold, 0 0 10px gold; /* Gold glow for kings */
+}
+
+/* Controls Area Styling */
+.controls-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 350px; /* Max width for controls */
+}
+
+.status-display {
+    background-color: #e0f2fe; /* Light blue */
+    border: 1px solid #90caf9; /* Medium blue */
+    color: #1e88e5; /* Dark blue */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.status-display p {
+    margin: 0;
+}
+
+#game-message {
+    font-size: 0.9rem;
+    color: #424242;
+    margin-top: 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    background-size: 200% auto;
+}
+
+.btn:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific button colors (Tailwind classes are used in HTML) */
+.bg-green-500 { background-color: #22c55e; }
+.hover:bg-green-600:hover { background-color: #16a34a; }
+.bg-blue-500 { background-color: #3b82f6; }
+.hover:bg-blue-600:hover { background-color: #2563eb; }
+.bg-purple-500 { background-color: #a855f7; }
+.hover:bg-purple-600:hover { background-color: #9333ea; }
+.bg-yellow-500 { background-color: #eab308; }
+.hover:bg-yellow-600:hover { background-color: #ca8a04; }
+.bg-red-500 { background-color: #ef4444; }
+.hover:bg-red-600:hover { background-color: #dc2626; }
+
+/* Input Field Styling */
+.move-input-section {
+    background-color: #f9fafb; /* Very light gray */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db; /* Light gray border */
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #374151; /* Darker text */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #3b82f6; /* Blue on focus */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Light blue glow */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .game-area {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .board-container {
+        width: 320px; /* Smaller board for mobile */
+        height: 320px;
+    }
+
+    .controls-area {
+        max-width: 100%;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .piece {
+        font-size: 1.8rem;
+    }
+
+    .piece.king {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .board-container {
+        width: 280px; /* Even smaller board for very small mobiles */
+        height: 280px;
+    }
+    .piece {
+        font-size: 1.5rem;
+    }
+    .piece.king {
+        font-size: 2rem;
+    }
+}

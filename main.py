@@ -51,9 +51,9 @@ class Game:
     def convert_to_tile(self, x, y):
         """
         Converts (x, y) coordinates to a 1-32 tile number.
-        Returns -1 for invalid coordinates.
+        Returns -1 for invalid coordinates or light squares.
         """
-        if not (0 <= x < 8 and 0 <= y < 8 and (x + y) % 2 == 1):
+        if not (0 <= x < 8 and 0 <= y < 8) or (x + y) % 2 == 0:  # Ensure it's a valid dark square
             return -1
 
         tile = 0
@@ -224,8 +224,10 @@ class Game:
         if self.history:
             self.board, self.current_turn = self.history.pop()
             print("Move undone.")
+            return True
         else:
             print("No moves to undo.")
+            return False
 
     def display_board(self):
         """Prints the current state of the checkers board."""
@@ -260,6 +262,12 @@ class Game:
             return 'b'  # Black wins
         if black_pieces == 0:
             return 'w'  # White wins
+
+        # Check for stalemate (no valid moves for current player)
+        if not self.get_all_valid_moves(self.board, self.current_turn):
+            # If current player has no moves, the other player wins
+            return 'b' if self.current_turn == 'w' else 'w'
+
         return None
 
     def monte_carlo_simulation(self, num_simulations=100):
@@ -273,35 +281,37 @@ class Game:
         if not possible_moves:
             return None  # No moves available
 
-        move_wins = {move: 0 for move in possible_moves}
+        move_scores = {move: 0 for move in possible_moves}
 
         for move in possible_moves:
-            for _ in range(num_simulations):  # Distribute simulations
+            # For each potential first move, run a subset of simulations
+            for _ in range(max(1, num_simulations // len(possible_moves))):
                 sim_game = copy.deepcopy(self)  # Create a deep copy for simulation
                 x1, y1, x2, y2 = move
                 sim_game.execute_move(x1, y1, x2, y2)  # Make the first move
 
                 # Simulate the rest of the game
-                while sim_game.get_winner() is None and sim_game.get_all_valid_moves(sim_game.board,
-                                                                                     sim_game.current_turn):
+                while sim_game.get_winner() is None:
                     next_player_moves = sim_game.get_all_valid_moves(sim_game.board, sim_game.current_turn)
                     if not next_player_moves:
-                        break  # No moves for current player in simulation
+                        # Stalemate in simulation, current player cannot move
+                        break
                     random_move = random.choice(next_player_moves)
                     sim_game.execute_move(*random_move)
 
                 winner = sim_game.get_winner()
                 if winner == current_player:
-                    move_wins[move] += 1
+                    move_scores[move] += 1
                 elif winner == opponent_player:
-                    move_wins[move] -= 1  # Penalize moves that lead to opponent wins
+                    move_scores[move] -= 1  # Penalize moves that lead to opponent wins
+                # If no winner (stalemate), score remains 0 for that simulation
 
         best_move = None
-        max_wins = -float('inf')
+        max_score = -float('inf')
 
-        for move, wins in move_wins.items():
-            if wins > max_wins:
-                max_wins = wins
+        for move, score in move_scores.items():
+            if score > max_score:
+                max_score = score
                 best_move = move
         return best_move
 
